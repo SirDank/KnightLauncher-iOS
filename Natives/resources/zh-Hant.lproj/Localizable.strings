@@ -258,7 +258,6 @@
 "preference.warn.allocated_memory" = "由於操作系統本身的限制，此選項在此值及更高值下可能會導致不穩定。請謹慎操作。";
 "preference.title.custom_env" = "環境變數";
 "preference.detail.custom_env" = "此選項正在構建中。請在此期間建立並編輯 custom_env.txt 檔案。";
-
 "preference.title.debug_skip_wait_jit" = "跳過「請等待應用獲取到 JIT 權限」對話框";
 "preference.detail.debug_skip_wait_jit" = "這並不是讓您在沒有 JIT 權限的情況下啟動，而是跳過除錯器檢查，因為在某些越獄裝置上會檢查失敗。";
 "preference.title.debug_ipad_ui" = "解鎖 iPadOS 介面";
