@@ -256,7 +256,6 @@
 "preference.warn.allocated_memory" = "İşletim sisteminin kendisindeki kısıtlamalar nedeniyle bu seçenek bunda veya daha yüksek değerlerde dengesizliğe sebep olabilir. Dikkatle devam edin.";
 "preference.title.custom_env" = "Ortam Değişkenleri";
 "preference.detail.custom_env" = "Bu seçenek yapım aşamasında. Bu sırada custom_env.txt dosyası oluṣturup düzenleyin.";
-
 "preference.title.debug_skip_wait_jit" = "\"JIT için bekleniliyor\" mesajını atla";
 "preference.detail.debug_skip_wait_jit" = "Bu JIT'siz başlatmanızı sağlamaz, aksine hata ayıklayıcı kontrolünü atlar, çünkü bu kontrol bazı belirli jailbreak'lerde başarısız oluyor.";
 "preference.title.debug_ipad_ui" = "iPadOS UI'ını aç";
