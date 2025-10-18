@@ -258,6 +258,10 @@
 "preference.warn.allocated_memory" = "Ze względu na ograniczenia samego systemu operacyjnego, ta opcja może powodować niestabilność przy tej i wyższych wartościach. Zachowaj ostrożność.";
 "preference.title.custom_env" = "Zmienne środowiskowe";
 "preference.detail.custom_env" = "Ta opcja jest w budowie. Stwórz i edytuj custom_env.txt w międzyczasie.";
+
+"preference.title.debug_universal_script_jit" = "Użyj uniwersalnego skryptu StikDebug";
+"preference.title.debug_always_attached_jit" = "Pozostań połączony ze StikDebug";
+"preference.detail.debug_always_attached_jit" = "Włącz tę opcję, jeśli Twoje modyfikacje wymagają ładowania plików .dylib w trakcie działania gry. Gdy ta opcja jest aktywna, okno obrazu w obrazie (PiP) StikDebug nie powinno być zamykane podczas rozgrywki. Wymaga włączonej opcji „Użyj uniwersalnego skryptu StikDebug”";
 "preference.title.debug_skip_wait_jit" = "Pomiń okno dialogowe \"Oczekiwanie na JIT\"";
 "preference.detail.debug_skip_wait_jit" = "To nie pozwala na uruchamianie bez JIT, zamiast tego pomija kontrolę debugera, ponieważ sprawdzenie nie powiodło się na niektórych więzieniach.";
 "preference.title.debug_ipad_ui" = "Odblokuj interfejs iPadOS";
