@@ -1,4 +1,4 @@
-package net.kdt.pojavlaunch;
+package net.kdt.pojavlauncher;
 
 import java.beans.Beans;
 import java.io.*;
@@ -9,15 +9,16 @@ import java.util.concurrent.*;
 import org.lwjgl.glfw.CallbackBridge;
 import org.lwjgl.glfw.GLFW;
 
-import net.kdt.pojavlaunch.uikit.*;
-import net.kdt.pojavlaunch.utils.*;
-import net.kdt.pojavlaunch.value.*;
+import net.kdt.pojavlauncher.uikit.*;
+import net.kdt.pojavlauncher.utils.*;
+import net.kdt.pojavlauncher.value.*;
 
 public class PojavLauncher {
     private static float currProgress, maxProgress;
 
     public static void main(String[] args) throws Throwable {
-        // Skip calling to com.apple.eawt.Application.nativeInitializeApplicationDelegate()
+        // Skip calling to
+        // com.apple.eawt.Application.nativeInitializeApplicationDelegate()
         Beans.setDesignTime(true);
         try {
             // Some places use macOS-specific code, which is unavailable on iOS
@@ -31,7 +32,7 @@ public class PojavLauncher {
             System.setProperty("java.util.prefs.PreferencesFactory", "java.util.prefs.FileSystemPreferencesFactory");
         } catch (Throwable th) {
             // Not on JRE8, ignore exception
-            //Tools.showError(th);
+            // Tools.showError(th);
         }
 
         Thread.currentThread().setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
@@ -45,9 +46,14 @@ public class PojavLauncher {
         try {
             // Try to initialize Caciocavallo17
             Class.forName("com.github.caciocavallosilano.cacio.ctc.CTCPreloadClassLoader");
-        } catch (ClassNotFoundException e) {}
+        } catch (ClassNotFoundException e) {
+        }
 
         if (args[0].equals("-jar")) {
+            if (args[1].equals("knight_install")) {
+                installSpiralKnights();
+                return;
+            }
             UIKit.callback_JavaGUIViewController_launchJarFile(args[1], Arrays.copyOfRange(args, 2, args.length));
         } else {
             launchMinecraft(args);
@@ -61,46 +67,59 @@ public class PojavLauncher {
 
         String sizeStr = System.getProperty("cacio.managed.screensize");
         System.setProperty("glfw.windowSize", sizeStr);
-        String[] size = sizeStr.split("x");
-        MCOptionUtils.load();
-        MCOptionUtils.set("fullscreen", "false");
-        MCOptionUtils.set("overrideWidth", size[0]);
-        MCOptionUtils.set("overrideHeight", size[1]);
-        // Default settings for performance
-        MCOptionUtils.setDefault("mipmapLevels", "0");
-        MCOptionUtils.setDefault("particles", "1");
-        MCOptionUtils.setDefault("renderDistance", "2");
-        MCOptionUtils.setDefault("simulationDistance", "5");
-        MCOptionUtils.save();
-
-        // Setup Forge splash.properties
-        File forgeSplashFile = new File(Tools.DIR_GAME_NEW, "config/splash.properties");
-        if (System.getProperty("pojav.internal.keepForgeSplash") == null) {
-            forgeSplashFile.getParentFile().mkdir();
-            if (forgeSplashFile.exists()) {
-                Tools.write(forgeSplashFile.getAbsolutePath(), Tools.read(forgeSplashFile.getAbsolutePath().replace("enabled=true", "enabled=false")));
-            } else {
-                Tools.write(forgeSplashFile.getAbsolutePath(), "enabled=false");
-            }
-        }
 
         System.setProperty("org.lwjgl.vulkan.libname", "libMoltenVK.dylib");
 
         MinecraftAccount account = MinecraftAccount.load(args[0]);
         JMinecraftVersionList.Version version = Tools.getVersionInfo(args[1]);
-        System.out.println("Launching Minecraft " + version.id);
-        String configPath;
-        if (version.logging != null) {
-            if (version.logging.client.file.id.equals("client-1.12.xml")) {
-                configPath = Tools.DIR_BUNDLE + "/log4j-rce-patch-1.12.xml";
-            } else if (version.logging.client.file.id.equals("client-1.7.xml")) {
-                configPath = Tools.DIR_BUNDLE + "/log4j-rce-patch-1.7.xml";
-            } else {
-                configPath = Tools.DIR_GAME_NEW + "/" + version.logging.client.file.id;
-            }
-            System.setProperty("log4j.configurationFile", configPath);
-        }
+        System.out.println("Launching Spiral Knights " + version.id);
 
         Tools.launchMinecraft(account, version);
+    }
+
+    private static void installSpiralKnights() {
+        new net.kdt.pojavlaunch.knight.KnightInstaller(new net.kdt.pojavlaunch.knight.Progress() {
+            @Override
+            public void postStepProgress(int prg) {
+                UIKit.updateProgress(null, prg, -1);
+            }
+
+            @Override
+            public void postPartProgress(int prg) {
+                // UIKit.updateProgress(null, prg, -1);
+            }
+
+            @Override
+            public void postMaxSteps(int max) {
+                UIKit.updateProgress(null, -1, max);
+            }
+
+            @Override
+            public void postMaxPart(int max) {
+                // UIKit.updateProgress(null, -1, max);
+            }
+
+            @Override
+            public void setPartIndeterminate(boolean indeterminate) {
+                // UIKit.updateProgress(null, -1, -1);
+            }
+
+            @Override
+            public void postLogLine(String line, Throwable th) {
+                UIKit.updateProgress(line, -1, -1);
+                if (th != null)
+                    th.printStackTrace();
+            }
+
+            @Override
+            public void moveToTop() {
+            }
+
+            @Override
+            public void unlockExit() {
+                UIKit.updateProgress("Done", 100, 100);
+                System.exit(0);
+            }
+        }).run();
     }
 }

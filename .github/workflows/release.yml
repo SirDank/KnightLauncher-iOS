@@ -1,7 +1,6 @@
 name: Release build
 
-on:
-  workflow_dispatch
+on: workflow_dispatch
 
 jobs:
   build:
@@ -17,7 +16,7 @@ jobs:
             platform_name: iossimulator
           - platform: 8
             platform_name: tvossimulator
-    
+
     runs-on: MacStadium
     steps:
       - name: Remove work folders
@@ -30,7 +29,7 @@ jobs:
           echo $password | sudo -S rm -rf ./.??* || true
           echo "after"
           ls -lah ./
-          
+
       - name: Checkout repository
         uses: actions/checkout@main
 
@@ -54,8 +53,8 @@ jobs:
         if: false && steps.gl4es-cache.outputs.cache-hit != 'true'
         uses: actions/checkout@main
         with:
-          repository: 'PojavLauncherTeam/gl4es-114-extra'
-          path: 'gl4es'
+          repository: "PojavLauncherTeam/gl4es-114-extra"
+          path: "gl4es"
 
       - name: Build gl4es
         if: false && steps.gl4es-cache.outputs.cache-hit != 'true'
@@ -71,7 +70,7 @@ jobs:
             -DCMAKE_C_FLAGS=-Wno-error=implicit-function-declaration
           cmake --build build --config RelWithDebInfo --target GL
           cp -R lib/libGL.dylib ../Natives/resources/Frameworks/libgl4es_114.dylib
-          
+
       - name: Push gl4es
         if: false && github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4es-cache.outputs.cache-hit != 'true'
         continue-on-error: true
@@ -79,7 +78,7 @@ jobs:
           git add Natives/resources/Frameworks/libgl4es_114.dylib
           git commit -am "CI: Update gl4es"
           git push
-          
+
       - name: Get JRE8
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -146,9 +145,9 @@ jobs:
           name: net.kdt.pojavlauncher-${{ matrix.platform_name }}.tipa
           path: artifacts/net.kdt.pojavlauncher-*-${{ matrix.platform_name }}-trollstore.tipa
 
-      - name: Upload PojavLauncher.dSYM
+      - name: Upload KnightLauncher.dSYM
         uses: actions/upload-artifact@main
         if: matrix.platform_name == 'ios'
         with:
-          name: PojavLauncher.dSYM
-          path: artifacts/PojavLauncher.dSYM
+          name: KnightLauncher.dSYM
+          path: artifacts/KnightLauncher.dSYM

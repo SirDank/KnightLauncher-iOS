@@ -1,7 +1,9 @@
 #import <UIKit/UIKit.h>
 
-#define sidebarNavController ((UINavigationController *)self.splitViewController.viewControllers[0])
-#define sidebarViewController ((LauncherMenuViewController *)sidebarNavController.viewControllers[0])
+#define sidebarNavController                                                   \
+  ((UINavigationController *)self.splitViewController.viewControllers[0])
+#define sidebarViewController                                                  \
+  ((LauncherMenuViewController *)sidebarNavController.viewControllers[0])
 
 @interface LauncherMenuCustomItem : NSObject
 @property(nonatomic) NSString *title, *imageName;
@@ -11,14 +13,9 @@
 
 @interface LauncherMenuViewController : UITableViewController
 
-@property NSString* listPath;
-@property(nonatomic) UIButton *accountButton;
-@property(nonatomic) UIBarButtonItem *accountBtnItem;
+@property NSString *listPath;
 @property(nonatomic) BOOL isInitialVc;
 
 - (void)restoreHighlightedSelection;
-- (void)selectAccount:(UIButton *)sender;
-- (void)updateAccountInfo;
-- (UIBarButtonItem *)drawAccountButton;
 
 @end

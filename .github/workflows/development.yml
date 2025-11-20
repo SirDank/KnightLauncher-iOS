@@ -1,14 +1,6 @@
 name: Development build
 
-on:
-  pull_request:
-    branches-ignore:
-      - 'l10n_main'
-    types: [opened, reopened]
-  push:
-    branches-ignore:
-      - 'l10n_main'
-  workflow_dispatch:
+on: workflow_dispatch
 
 jobs:
   build:
@@ -18,7 +10,7 @@ jobs:
         include:
           - platform: 2
             platform_name: ios
-    
+
     runs-on: J316sAP
     steps:
       - name: Remove work folders
@@ -29,7 +21,7 @@ jobs:
           rm -rf ./.??* || true
           echo "after"
           ls -lah ./
-          
+
       - name: Checkout repository
         uses: actions/checkout@main
 
@@ -53,8 +45,8 @@ jobs:
         if: false && steps.gl4es-cache.outputs.cache-hit != 'true'
         uses: actions/checkout@main
         with:
-          repository: 'PojavLauncherTeam/gl4es-114-extra'
-          path: 'gl4es'
+          repository: "PojavLauncherTeam/gl4es-114-extra"
+          path: "gl4es"
 
       - name: Build gl4es
         if: false && steps.gl4es-cache.outputs.cache-hit != 'true'
@@ -70,7 +62,7 @@ jobs:
             -DCMAKE_C_FLAGS=-Wno-error=implicit-function-declaration
           cmake --build build --config RelWithDebInfo --target GL
           cp -R lib/libGL.dylib ../Natives/resources/Frameworks/libgl4es_114.dylib
-          
+
       - name: Push gl4es
         if: false && github.event != 'pull_request' && github.ref_name == 'main' && steps.gl4es-cache.outputs.cache-hit != 'true'
         continue-on-error: true
@@ -98,30 +90,30 @@ jobs:
       - name: Upload regular ipa
         uses: actions/upload-artifact@main
         with:
-          name: org.angelauramc.amethyst-${{ matrix.platform_name }}.ipa
-          path: artifacts/org.angelauramc.amethyst-*-${{ matrix.platform_name }}.ipa
+          name: net.kdt.pojavlauncher-${{ matrix.platform_name }}.ipa
+          path: artifacts/net.kdt.pojavlauncher-*-${{ matrix.platform_name }}.ipa
 
       - name: Upload regular tipa
         uses: actions/upload-artifact@main
         with:
-          name: org.angelauramc.amethyst-${{ matrix.platform_name }}-trollstore.tipa
-          path: artifacts/org.angelauramc.amethyst-*-${{ matrix.platform_name }}-trollstore.tipa
+          name: net.kdt.pojavlauncher-${{ matrix.platform_name }}-trollstore.tipa
+          path: artifacts/net.kdt.pojavlauncher-*-${{ matrix.platform_name }}-trollstore.tipa
 
       - name: Upload slimmed ipa
         uses: actions/upload-artifact@main
         with:
-          name: org.angelauramc.amethyst.slimmed-${{ matrix.platform_name }}.ipa
-          path: artifacts/org.angelauramc.amethyst.slimmed-*-${{ matrix.platform_name }}.ipa
+          name: net.kdt.pojavlauncher.slimmed-${{ matrix.platform_name }}.ipa
+          path: artifacts/net.kdt.pojavlauncher.slimmed-*-${{ matrix.platform_name }}.ipa
 
       - name: Upload slimmed tipa
         uses: actions/upload-artifact@main
         with:
-          name: org.angelauramc.amethyst.slimmed-${{ matrix.platform_name }}-trollstore.tipa
-          path: artifacts/org.angelauramc.amethyst.slimmed-*-${{ matrix.platform_name }}-trollstore.tipa
+          name: net.kdt.pojavlauncher.slimmed-${{ matrix.platform_name }}-trollstore.tipa
+          path: artifacts/net.kdt.pojavlauncher.slimmed-*-${{ matrix.platform_name }}-trollstore.tipa
 
-      - name: Upload PojavLauncher.dSYM
+      - name: Upload KnightLauncher.dSYM
         uses: actions/upload-artifact@main
         if: matrix.platform_name == 'ios'
         with:
-          name: AngelAuraAmethyst.dSYM
-          path: artifacts/AngelAuraAmethyst.dSYM
+          name: KnightLauncher.dSYM
+          path: artifacts/KnightLauncher.dSYM
